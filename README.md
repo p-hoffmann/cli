@@ -1,177 +1,82 @@
-# Supabase CLI
+# Trex CLI
 
-[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=develop)](https://coveralls.io/github/supabase/cli?branch=develop) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
-](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
+`trex` is a Supabase-CLI-compatible binary for managing Trex deployments. It
+implements the same command surface as the upstream Supabase CLI — `trex login`,
+`trex link`, `trex functions deploy`, `trex secrets set`, `trex gen types`,
+`trex config push` — and points at the Supabase-compatible management API
+exposed by Trex.
 
-[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
+This package is a fork of [`supabase/cli`](https://github.com/supabase/cli). The
+source is otherwise upstream-compatible; only the published artifact name (`trex`)
+and a few user-visible strings differ.
 
-This repository contains all the functionality for Supabase CLI.
+## Install
 
-- [x] Running Supabase locally
-- [x] Managing database migrations
-- [x] Creating and deploying Supabase Functions
-- [x] Generating types directly from your database schema
-- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
-
-## Getting started
-
-### Install the CLI
-
-Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
+### npm
 
 ```bash
-npm i supabase --save-dev
+npm install -g trex
 ```
 
-When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
+The postinstall script downloads the platform-specific binary from the GitHub
+release matching the package version.
 
-```
-NODE_OPTIONS=--no-experimental-fetch yarn add supabase
-```
+### Homebrew
 
-> **Note**
-For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
+A Trex tap is not yet published. Install via npm or build from source.
 
-<details>
-  <summary><b>macOS</b></summary>
-
-  Available via [Homebrew](https://brew.sh). To install:
-
-  ```sh
-  brew install supabase/tap/supabase
-  ```
-
-  To install the beta release channel:
-  
-  ```sh
-  brew install supabase/tap/supabase-beta
-  brew link --overwrite supabase-beta
-  ```
-  
-  To upgrade:
-
-  ```sh
-  brew upgrade supabase
-  ```
-</details>
-
-<details>
-  <summary><b>Windows</b></summary>
-
-  Available via [Scoop](https://scoop.sh). To install:
-
-  ```powershell
-  scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-  scoop install supabase
-  ```
-
-  To upgrade:
-
-  ```powershell
-  scoop update supabase
-  ```
-</details>
-
-<details>
-  <summary><b>Linux</b></summary>
-
-  Available via [Homebrew](https://brew.sh) and Linux packages.
-
-  #### via Homebrew
-
-  To install:
-
-  ```sh
-  brew install supabase/tap/supabase
-  ```
-
-  To upgrade:
-
-  ```sh
-  brew upgrade supabase
-  ```
-
-  #### via Linux packages
-
-  Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
-
-  ```sh
-  sudo apk add --allow-untrusted <...>.apk
-  ```
-
-  ```sh
-  sudo dpkg -i <...>.deb
-  ```
-
-  ```sh
-  sudo rpm -i <...>.rpm
-  ```
-
-  ```sh
-  sudo pacman -U <...>.pkg.tar.zst
-  ```
-</details>
-
-<details>
-  <summary><b>Other Platforms</b></summary>
-
-  You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
-
-  ```sh
-  go install github.com/supabase/cli@latest
-  ```
-
-  Add a symlink to the binary in `$PATH` for easier access:
-
-  ```sh
-  ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
-  ```
-
-  This works on other non-standard Linux distros.
-</details>
-
-<details>
-  <summary><b>Community Maintained Packages</b></summary>
-
-  Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
-  To install in your working directory:
-
-  ```bash
-  pkgx install supabase
-  ```
-
-  Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
-</details>
-
-### Run the CLI
+### Build from source
 
 ```bash
-supabase bootstrap
+git clone https://github.com/p-hoffmann/cli
+cd cli
+go build -o trex
+./trex --version
 ```
 
-Or using npx:
+## Use
+
+Point the CLI at your Trex server (defaults to `http://localhost:8001`):
 
 ```bash
-npx supabase bootstrap
+trex login --use-api http://localhost:8001
+trex link --project-ref trexsqldefaultlocall --use-api http://localhost:8001
+
+trex functions new hello-world
+trex functions deploy hello-world
+
+trex secrets set MY_API_KEY=…
+trex gen types typescript --schema public,trex
 ```
 
-The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
+See the [CLI documentation](https://github.com/p-hoffmann/trexsql/tree/main/plugins/docs/docs/cli.md)
+for the full command list and compatibility notes.
 
-## Docs
+## Development
 
-Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
+This is a Go project. Run the test suite with:
 
-## Breaking changes
-
-We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
-
-However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
-
-## Developing
-
-To run from source:
-
-```sh
-# Go >= 1.22
-go run . help
+```bash
+go test ./...
 ```
+
+The CI configuration (`.github/workflows/ci.yml`) runs lint, unit tests, and
+end-to-end tests against a local stack. Releases are produced by
+`.github/workflows/release-beta.yml` via [GoReleaser](https://goreleaser.com/),
+which builds binaries for darwin/linux/windows on amd64/arm64 and publishes
+deb / rpm / apk / archlinux packages plus an npm wrapper.
+
+## Compatibility
+
+The CLI's Go module path remains `github.com/supabase/cli` (the upstream fork
+path) so that import paths and ldflag injections work without rewriting every
+file. The published binary, npm package, and release archives are named `trex`.
+
+The on-disk config directory (`supabase/config.toml`) and the `SUPABASE_*`
+environment variables are left as-is for compatibility with the upstream
+Supabase CLI workflow — projects can switch between `supabase` and `trex`
+without re-running `init`.
+
+## License
+
+MIT, inherited from upstream Supabase CLI.

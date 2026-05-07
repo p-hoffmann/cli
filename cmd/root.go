@@ -46,7 +46,7 @@ func IsManagementAPI(cmd *cobra.Command) bool {
 
 func promptLogin(fsys afero.Fs) error {
 	if _, err := utils.LoadAccessTokenFS(fsys); err == utils.ErrMissingToken {
-		utils.CmdSuggestion = fmt.Sprintf("Run %s first.", utils.Aqua("supabase login"))
+		utils.CmdSuggestion = fmt.Sprintf("Run %s first.", utils.Aqua("trex login"))
 		return errors.New("You need to be logged-in in order to use Management API commands.")
 	} else {
 		return err
@@ -87,8 +87,8 @@ var (
 	createTicket bool
 
 	rootCmd = &cobra.Command{
-		Use:     "supabase",
-		Short:   "Supabase CLI " + utils.Version,
+		Use:     "trex",
+		Short:   "Trex CLI " + utils.Version,
 		Version: utils.Version,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			if IsExperimental(cmd) && !viper.GetBool("EXPERIMENTAL") {

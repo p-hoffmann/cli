@@ -1,12 +1,12 @@
 {
-  "name": "supabase",
+  "name": "trex",
   "version": "0.0.0-automated",
-  "description": "Supabase CLI",
-  "repository": "supabase/cli",
-  "homepage": "https://supabase.com/docs/reference/cli",
-  "bugs": "https://github.com/supabase/cli/issues",
+  "description": "Trex CLI",
+  "repository": "p-hoffmann/cli",
+  "homepage": "https://github.com/p-hoffmann/trexsql",
+  "bugs": "https://github.com/p-hoffmann/cli/issues",
   "license": "MIT",
-  "author": "Supabase",
+  "author": "Trex",
   "type": "module",
   "engines": {
     "npm": ">=8"
@@ -18,7 +18,7 @@
     "postinstall": "node scripts/postinstall.js"
   },
   "bin": {
-    "supabase": "bin/supabase"
+    "trex": "bin/trex"
   },
   "dependencies": {
     "bin-links": "^6.0.0",

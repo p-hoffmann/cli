@@ -74,8 +74,8 @@ const fetchAndParseCheckSumFile = async (packageJson, agent) => {
   }
 };
 
-const errGlobal = `Installing Supabase CLI as a global module is not supported.
-Please use one of the supported package managers: https://github.com/supabase/cli#install-the-cli
+const errGlobal = `Installing Trex CLI as a global module is not supported.
+Please use one of the supported package managers: https://github.com/p-hoffmann/trexsql#cli
 `;
 const errChecksum = "Checksum mismatch. Downloaded data might be corrupted.";
 const errUnsupported = `Installation is not supported for ${process.platform} ${process.arch}`;

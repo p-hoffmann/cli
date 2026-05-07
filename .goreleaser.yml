@@ -1,8 +1,8 @@
 version: 2
-project_name: supabase
+project_name: trex
 builds:
-  - id: supabase
-    binary: supabase
+  - id: trex
+    binary: trex
     flags:
       - -trimpath
     ldflags:
@@ -34,10 +34,10 @@ changelog:
     - title: Others
       order: 999
 nfpms:
-  - vendor: Supabase
-    description: Supabase CLI
-    maintainer: Supabase CLI
-    homepage: https://supabase.com
+  - vendor: Trex
+    description: Trex CLI
+    maintainer: Trex
+    homepage: https://github.com/p-hoffmann/trexsql
     license: MIT
     formats:
       - apk
